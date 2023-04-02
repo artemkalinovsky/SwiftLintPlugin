@@ -12,10 +12,6 @@ let package = Package(
   ],
   products: [
     .plugin(
-      name: "SwiftLint",
-      targets: ["SwiftLint"]
-    ),
-    .plugin(
       name: "SwiftLintCommand",
       targets: ["SwiftLintCommand"]
     ),
@@ -25,23 +21,12 @@ let package = Package(
     ),
   ],
   targets: [
-    .binaryTarget(
-      name: "SwiftLintBinary",
-      url:
-        "https://github.com/realm/SwiftLint/releases/download/0.51.0/SwiftLintBinary-macos.artifactbundle.zip",
-      checksum: "9fbfdf1c2a248469cfbe17a158c5fbf96ac1b606fbcfef4b800993e7accf43ae"
-    ),
-    .plugin(
-      name: "SwiftLint",
-      capability: .buildTool(),
-      dependencies: ["SwiftLintBinary"]
-    ),
     .plugin(
       name: "SwiftLintCommand",
       capability: .command(
         intent: .custom(verb: "swiftlint", description: "Run swiftlint")
       ),
-      dependencies: ["SwiftLintBinary"]
+      dependencies: [.target(name: "SwiftLintBinary")]
     ),
     .plugin(
       name: "SwiftLintFix",
@@ -49,7 +34,13 @@ let package = Package(
         intent: .sourceCodeFormatting(),
         permissions: [.writeToPackageDirectory(reason: "Fixes fixable lint issues")]
       ),
-      dependencies: ["SwiftLintBinary"]
+      dependencies: [.target(name: "SwiftLintBinary")]
     ),
+    .binaryTarget(
+      name: "SwiftLintBinary",
+      url:
+        "https://github.com/realm/SwiftLint/releases/download/0.51.0/SwiftLintBinary-macos.artifactbundle.zip",
+      checksum: "9fbfdf1c2a248469cfbe17a158c5fbf96ac1b606fbcfef4b800993e7accf43ae"
+    )
   ]
 )
