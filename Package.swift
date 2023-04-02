@@ -39,8 +39,7 @@ let package = Package(
     .plugin(
       name: "SwiftLintCommand",
       capability: .command(
-        intent: .sourceCodeFormatting(),
-        permissions: [.writeToPackageDirectory(reason: "Run swiftlint")]
+        intent: .custom(verb: "swiftlint", description: "Run swiftlint")
       ),
       dependencies: ["SwiftLintBinary"]
     ),
