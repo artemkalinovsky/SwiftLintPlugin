@@ -5,7 +5,10 @@ import PackageDescription
 let package = Package(
     name: "SwiftLintPlugin",
     platforms: [
-        .macOS(.v13)
+        .macOS(.v13),
+        .iOS(.v14),
+        .tvOS(.v14),
+        .watchOS(.v9)
     ],
     products: [
         .plugin(
