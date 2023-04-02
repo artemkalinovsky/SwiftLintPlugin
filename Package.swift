@@ -5,7 +5,10 @@ import PackageDescription
 let package = Package(
     name: "SwiftLintPlugin",
     platforms: [
-        .macOS(.v13)
+        .macOS(.v13),
+        .iOS(.v14),
+        .watchOS(.v6),
+        .tvOS(.v14)
     ],
     products: [
         .plugin(
@@ -40,11 +43,10 @@ let package = Package(
             .plugin(
                 name: "SwiftLintCommand",
                 capability: .command(
-                    intent: .custom(
-                        verb: "swift-lint",
-                        description: "Run SwiftLint"
-                    )
-                )
+                    intent: .sourceCodeFormatting(),
+                    permissions: [.writeToPackageDirectory(reason: "lint issues")]
+                ),
+                dependencies: ["SwiftLintBinary"]
             )
     ]
 )
