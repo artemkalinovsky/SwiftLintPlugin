@@ -5,10 +5,7 @@ import PackageDescription
 let package = Package(
     name: "SwiftLintPlugin",
     platforms: [
-        .macOS(.v13),
-        .iOS(.v14),
-        .watchOS(.v6),
-        .tvOS(.v14)
+        .macOS(.v13)
     ],
     products: [
         .plugin(
@@ -16,9 +13,13 @@ let package = Package(
             targets: ["SwiftLint"]
         ),
         .plugin(
+            name: "SwiftLintCommand",
+            targets: ["SwiftLintCommand"]
+        ),
+        .plugin(
             name: "SwiftLintFix",
             targets: ["SwiftLintFix"]
-        ),
+        )
     ],
     targets: [
         .binaryTarget(
@@ -31,20 +32,16 @@ let package = Package(
             capability: .buildTool(),
             dependencies: ["SwiftLintBinary"]
         ),
-
+        .plugin(
+            name: "SwiftLintCommand",
+            capability: .command(intent: .custom(verb: "swiftlint", description: "lint project sources")),
+            dependencies: ["SwiftLintBinary"]
+        ),
             .plugin(
                 name: "SwiftLintFix",
                 capability: .command(
                     intent: .sourceCodeFormatting(),
                     permissions: [.writeToPackageDirectory(reason: "Fixes fixable lint issues")]
-                ),
-                dependencies: ["SwiftLintBinary"]
-            ),
-            .plugin(
-                name: "SwiftLintCommand",
-                capability: .command(
-                    intent: .sourceCodeFormatting(),
-                    permissions: [.writeToPackageDirectory(reason: "lint issues")]
                 ),
                 dependencies: ["SwiftLintBinary"]
             )
